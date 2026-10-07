@@ -1,0 +1,529 @@
+@import 'tailwindcss';
+
+/* `light:` variant for the rare place a component needs to differ by theme */
+@custom-variant light (&:where([data-theme=light], [data-theme=light] *));
+
+/* ==================================================================
+   CARBONOZ design system
+   Dark-first instrument surfaces, warm paper for editorial sections.
+   Energy colours follow the CARBONOZ platform dashboard:
+   solar = gold, battery = green, grid = orange, load = violet.
+   ================================================================== */
+
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Ink — instrument surfaces */
+  --color-ink-950: #05070a;
+  --color-ink-900: #080b10;
+  --color-ink-850: #0c1016;
+  --color-ink-800: #11161e;
+  --color-ink-700: #18202b;
+  --color-ink-600: #222c39;
+
+  /* Paper — editorial surfaces */
+  --color-paper: #f1efe8;
+  --color-paper-2: #e7e4da;
+  --color-paper-ink: #0b0e13;
+  --color-paper-muted: #5a606c;
+  --color-paper-line: #d5d1c4;
+
+  /* Text on ink */
+  --color-fg: #eceff4;
+  --color-fg-2: #b6becb;
+  --color-muted: #7c8696;
+  --color-subtle: #4f5867;
+  --color-line: rgb(255 255 255 / 0.075);
+  --color-line-strong: rgb(255 255 255 / 0.14);
+
+  /* Brand */
+  --color-brand: #e3b11b;
+  --color-brand-hi: #f4c94a;
+  --color-on-brand: #171203;
+
+  /* Energy semantics */
+  --color-solar: #f6c64b;
+  --color-batt: #3ddc97;
+  --color-grid: #ff8a3d;
+  --color-load: #a48bff;
+  --color-ai: #5ce1e6;
+  --color-danger: #ff5a5f;
+  --color-warn: #f5b53d;
+  --color-ok: #3ddc97;
+
+  /* CARBONOZ app (HomeOS design language, dark theme) — from login.carbonoz.com/offsettingdashboard/src/index.css */
+  --color-app: rgb(6 10 20);
+  --color-panel: rgb(12 18 32);
+  --color-panel-2: rgb(16 24 42);
+  --color-panel-3: rgb(21 30 50);
+  --color-accent: rgb(222 175 11);
+  --color-accent-hover: rgb(240 194 58);
+  --color-accent-ink: rgb(240 196 60);
+  --color-on-accent: rgb(26 20 2);
+  --color-home: rgb(167 139 250);
+  --color-gridp: rgb(251 122 44);
+  --font-inter: var(--font-inter-face), Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.025) inset, 0 12px 32px -18px rgb(0 0 0 / 0.8);
+  --shadow-pop: 0 24px 48px -16px rgb(0 0 0 / 0.6);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --breakpoint-xs: 420px;
+  --breakpoint-3xl: 1720px;
+
+  --animate-pulse-dot: pulse-dot 2.4s var(--ease-in-out-cubic) infinite;
+  --animate-scan: scan 3.2s linear infinite;
+
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+    50% { box-shadow: 0 0 0 4px transparent; opacity: 0.55; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes scan {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+  }
+}
+
+/* ------------------------------------------------------------------
+   .homeos — every product surface (live demo, embedded app, live
+   widgets) uses the CARBONOZ app's own tokens, type and motion.
+   ------------------------------------------------------------------ */
+.homeos {
+  --color-fg: rgb(238 242 250);
+  --color-fg-2: rgb(197 205 221);
+  --color-muted: rgb(138 149 172);
+  --color-subtle: rgb(91 102 128);
+  --color-line: rgb(26 35 54);
+  --color-line-strong: rgb(36 48 73);
+  --color-solar: rgb(247 201 72);
+  --color-batt: rgb(47 212 110);
+  --color-grid: rgb(251 122 44);
+  --color-load: rgb(167 139 250);
+  --color-danger: rgb(240 75 75);
+  --color-warn: rgb(251 122 44);
+  --color-ok: rgb(47 212 110);
+  --color-brand: rgb(240 190 30);
+  font-family: var(--font-inter);
+  font-feature-settings: 'cv11', 'ss01';
+  color: var(--color-fg);
+  color-scheme: dark;
+}
+
+.homeos .num,
+.tabular {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: normal;
+}
+
+/* Website panels and labels inside a product scope take the app's card look and type */
+.homeos .panel {
+  border-radius: 12px;
+  border-color: var(--color-line);
+  background: var(--color-panel);
+  box-shadow: var(--shadow-card);
+}
+.homeos .panel-flat {
+  border-radius: 12px;
+  border-color: var(--color-line);
+  background: var(--color-panel-2);
+}
+.homeos .label {
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+@keyframes flow-dash {
+  to { stroke-dashoffset: -20; }
+}
+.flow-line {
+  stroke-dasharray: 6 4;
+  animation: flow-dash 0.9s linear infinite;
+}
+.flow-line.reverse {
+  animation-direction: reverse;
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.glow-pulse {
+  animation: glow-pulse 2.6s ease-in-out infinite;
+}
+@keyframes charge {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+.charge-sheen {
+  animation: charge 2.4s ease-in-out infinite;
+}
+
+/* Chart colours (app useChartTheme), dark */
+:root {
+  --chart-grid: #1a2335;
+  --chart-axis: #6b7690;
+  --chart-cursor: #3a4660;
+  --tooltip-bg: #0f1728;
+  --tooltip-border: #26324b;
+  --app-glow: rgb(11 19 38);
+  --grid-line: rgb(255 255 255 / 0.035);
+  --track: rgb(255 255 255 / 0.12);
+  --color-brand-ink: var(--color-brand);
+}
+
+/* ==================================================================
+   Light theme — html[data-theme='light'] (set before paint from the
+   visitor's choice or the system preference; see layout.tsx).
+   ================================================================== */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-ink-950: #f5f6f8;
+  --color-ink-900: #ffffff;
+  --color-ink-850: #f2f4f7;
+  --color-ink-800: #eaedf2;
+  --color-ink-700: #dfe3ea;
+  --color-ink-600: #cfd5df;
+  --color-fg: #0b0e13;
+  --color-fg-2: #2a313d;
+  --color-muted: #5a6371;
+  --color-subtle: #8a929e;
+  --color-line: rgb(11 14 19 / 0.09);
+  --color-line-strong: rgb(11 14 19 / 0.17);
+  --color-brand-ink: #8f6a04;
+  --color-solar: #a87b00;
+  --color-batt: #11845a;
+  --color-grid: #c2560f;
+  --color-load: #6d4fd8;
+  --color-ai: #0b7f88;
+  --color-danger: #cf3a40;
+  --color-warn: #9a6400;
+  --color-ok: #11845a;
+
+  /* CARBONOZ app, light theme (login.carbonoz.com index.css :root) */
+  --color-app: rgb(238 242 248);
+  --color-panel: rgb(255 255 255);
+  --color-panel-2: rgb(246 248 252);
+  --color-panel-3: rgb(237 241 247);
+  --color-accent-hover: rgb(201 157 8);
+  --color-accent-ink: rgb(146 112 0);
+  --color-home: rgb(124 58 237);
+  --color-gridp: rgb(234 88 12);
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -16px rgb(15 23 42 / 0.18);
+  --shadow-pop: 0 24px 48px -16px rgb(15 23 42 / 0.28);
+
+  --chart-grid: #e7ebf2;
+  --chart-axis: #7a869c;
+  --chart-cursor: #b8c2d4;
+  --tooltip-bg: #ffffff;
+  --tooltip-border: #dbe2ec;
+  --app-glow: rgb(227 233 245);
+  --grid-line: rgb(11 14 19 / 0.045);
+  --track: rgb(11 14 19 / 0.14);
+}
+
+:root[data-theme='light'] .homeos {
+  --color-fg: rgb(12 20 36);
+  --color-fg-2: rgb(47 59 82);
+  --color-muted: rgb(95 107 130);
+  --color-subtle: rgb(140 151 171);
+  --color-line: rgb(226 231 240);
+  --color-line-strong: rgb(209 217 230);
+  --color-solar: rgb(214 154 0);
+  --color-batt: rgb(22 163 74);
+  --color-grid: rgb(234 88 12);
+  --color-load: rgb(124 58 237);
+  --color-danger: rgb(220 38 38);
+  --color-warn: rgb(234 88 12);
+  --color-ok: rgb(22 163 74);
+  --color-brand: rgb(222 175 11);
+  color-scheme: light;
+}
+
+/* Gold text needs a deeper tone on light surfaces; gold fills stay gold. */
+:root[data-theme='light'] .text-brand {
+  color: var(--color-brand-ink);
+}
+
+/* Hero phone: slow float */
+@keyframes phone-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+.phone-float {
+  animation: phone-float 7s ease-in-out infinite;
+}
+
+/* Group marquee: two identical halves, translated by exactly one half → seamless loop */
+@keyframes marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  animation: marquee 70s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-inline: var(--gutter);
+  }
+  .marquee-dup {
+    display: none;
+  }
+  .marquee {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+  .marquee-track > li {
+    padding-bottom: 0.75rem;
+  }
+}
+
+/* Motion timings (ms) — referenced from src/components/ui/motion.ts */
+:root {
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 520ms;
+  --gutter: clamp(16px, 4vw, 40px);
+  --section-y: clamp(88px, 12vw, 176px);
+}
+:root:not([data-theme='light']) {
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-ink-950);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 88px;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01', 'cv11';
+  overflow-x: clip;
+}
+
+/* Grid children may shrink below their content (truncate, scrollers) */
+.grid > * {
+  min-width: 0;
+}
+
+::selection {
+  background: rgb(227 177 27 / 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@layer components {
+  /* Entrance that needs no JavaScript (hero, LCP-safe) */
+  .rise {
+    animation: rise 0.9s var(--ease-out-quint) both;
+  }
+
+  .container-x {
+    width: 100%;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Small uppercase technical label */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .display {
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+  }
+
+  .h2 {
+    font-size: clamp(2.1rem, 4.6vw, 4.1rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+  }
+
+  .h3 {
+    font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .lede {
+    font-size: clamp(1.02rem, 1.25vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--color-fg-2);
+  }
+
+  /* Instrument panel: hairline border, faint top light */
+  .panel {
+    position: relative;
+    border: 1px solid var(--color-line);
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 120px),
+      var(--color-ink-900);
+    border-radius: 10px;
+  }
+
+  .panel-flat {
+    border: 1px solid var(--color-line);
+    background: var(--color-ink-850);
+    border-radius: 8px;
+  }
+
+  /* Technical grid backdrop */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .grid-bg-paper {
+    background-image:
+      linear-gradient(to right, rgb(11 14 19 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(11 14 19 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .fade-edges {
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, #000 40%, transparent 100%);
+  }
+
+  /* Paper section: flips text tokens for editorial light surfaces */
+  .on-paper {
+    background: var(--color-paper);
+    color: var(--color-paper-ink);
+    --color-fg: var(--color-paper-ink);
+    --color-fg-2: #2c313b;
+    --color-muted: var(--color-paper-muted);
+    --color-subtle: #8a8f99;
+    --color-line: var(--color-paper-line);
+    --color-line-strong: #bdb8a8;
+    /* Energy and status colours, darkened for contrast on paper */
+    --color-brand: #b3870a;
+    --color-batt: #11845a;
+    --color-ai: #0b7f88;
+    --color-warn: #9a6400;
+    --color-grid: #c2560f;
+    --color-solar: #a87b00;
+    color-scheme: light;
+  }
+
+  .link-u {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--dur-base) var(--ease-out-quint);
+  }
+  .link-u:hover {
+    background-size: 100% 1px;
+  }
+
+  .scroll-x {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Range slider used across the demos */
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+    --fill: 50%;
+    --tint: var(--color-brand);
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--tint) var(--fill), var(--track) var(--fill));
+  }
+  .range::-moz-range-track {
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--tint) var(--fill), var(--track) var(--fill));
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -7px;
+    border-radius: 999px;
+    background: var(--color-ink-950);
+    border: 2px solid var(--tint);
+    box-shadow: 0 0 0 4px rgb(0 0 0 / 0.35);
+    transition: transform var(--dur-fast);
+  }
+  .range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--color-ink-950);
+    border: 2px solid var(--tint);
+  }
+  .range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+  .range:focus-visible {
+    outline: none;
+  }
+  .range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px var(--color-ink-950), 0 0 0 5px var(--color-brand);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
